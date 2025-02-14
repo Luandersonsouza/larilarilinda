@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Aniversário!</title>
+    <style>
+        body {
+            background-color: #f7e6f6; /* Rosa suave */
+            text-align: center;
+            font-family: 'Playfair Display', serif; /* Fonte elegante */
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            color: #4b2e83; /* Roxo suave */
+        }
+        #congrats-message {
+            display: none;
+            color: #e6a4d7; /* Rosa claro */
+            font-size: 3em;
+            margin-top: 50px;
+            font-weight: 600;
+            font-style: italic;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        .question {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            display: none;
+            font-size: 1.3em;
+        }
+        .question.active {
+            display: block; 
+        }
+        .question h2 {
+            color: #e6a4d7;
+            font-size: 1.6em;
+        }
+        .question p {
+            font-size: 1.3em; 
+        }
+        .question button {
+            background-color: #e6a4d7;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+        .question button:hover {
+            background-color: #d27a99; 
+        }
+        #photo-container {
+            margin-top: 200px;
+            display: none; /* Escondido inicialmente */
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.1);
+        }
+        .balloon {
+            width: 50px;
+            height: 70px;
+            background: radial-gradient(circle, #ff99cc, #ff66b2);
+            border-radius: 50%;
+            position: absolute;
+            bottom: -100px;
+            animation: floatUp 5s linear infinite;
+        }
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: red;
+            clip-path: polygon(50% 15%, 90% 0%, 100% 40%, 50% 100%, 0% 40%, 10% 0%);
+            opacity: 1;
+            animation: floatHearts 5s linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-120vh); }
+        }
+        @keyframes floatHearts {
+            0% {transform: translateY(100vh) scale(0.5);opacity: 1;}
+            50% {opacity: 0.8;}
+            100%  {transform: translateY(-10vh) scale(1.2);opacity: 0;}
+        }       
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            .question h2 {
+                font-size: 1.5em;
+            }
+            .question p {
+                font-size: 1.2em;
+            }
+            img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Perguntas engraçadas sobre direito -->
+        <div class="question active" id="question1">
+            <h2>Pergunta 1: O que um juiz faz quando está com calor?</h2>
+            <p>a) Tira a toga<br>b) Declara recesso<br>c) Vira um "juiz de fora"</p>
+            <button onclick="checkAnswer('question1', 'c')">Responder</button>
+        </div>
+
+        <div class="question" id="question2">
+            <h2>Pergunta 2: Qual é o crime favorito de um advogado?</h2>
+            <p>a) Roubar corações<br>b) Furtar ideias<br>c) Assaltar o banco de horas</p>
+            <button onclick="checkAnswer('question2', 'c')">Responder</button>
+        </div>
+
+        <div class="question" id="question3">
+            <h2>Pergunta 3: O que um advogado faz quando perde um caso?</h2>
+            <p>a) Recorre<br>b) Chora no banheiro<br>c) Vira juiz</p>
+            <button onclick="checkAnswer('question3', 'a')">Responder</button>
+        </div>
+
+        <!-- Container das fotos (inicialmente escondido) -->
+        <div id="photo-container">
+            <img src="animations/larilari.gif " alt="Foto 1">
+            <img src="imgs/foto 2.jpeg" alt="Foto 2">
+            <img src="animations/Animation - 1739547371462.gif" alt="Foto 3">
+        </div>
+
+        <!-- Mensagem de parabéns (inicialmente escondida) -->
+        <div id="congrats-message" style="display: none;">
+            <h2>Parabéns, princesa barbie lago dos cisnes! 🎉</h2>
+            <p>Você acertou todas as perguntas! Aqui estão suas fotos para celebrar esse dia especial!</p>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let correctAnswers = 0; // Controla a pergunta atual
+
+        // Função para verificar as respostas
+        function checkAnswer(questionId, correctAnswer) {
+            const questionDiv = document.getElementById(questionId);
+            const answer = prompt("Digite a letra da resposta correta (a, b ou c):").toLowerCase();
+
+            if (answer === correctAnswer) {
+                alert("Resposta correta!");
+                questionDiv.style.backgroundColor = "#d4edda"; /* Verde claro */
+
+                // Avança para a próxima pergunta
+                currentQuestion++;
+                if (currentQuestion <= 3) {
+                    document.getElementById(`question${currentQuestion}`).classList.add('active');
+                    questionDiv.classList.remove('active');
+                } else {
+                    // Todas as perguntas foram respondidas corretamente
+                    alert("Você é a mais mais advogata!!! 🎉")
+                    showPhotosAndCongrats();
+                }
+            } else {
+                alert("Resposta errada! Tente novamente. 😅");
+                questionDiv.style.backgroundColor = "#f8d7da"; /* Vermelho claro */
+            }
+        }
+
+        // Função para mostrar as fotos e a mensagem de parabéns
+        function showPhotosAndCongrats() {
+            const questions = document.querySelectorAll('.question');
+            questions.forEach(question => question.style.display = "none"); 
+            document.getElementById('photo-container').style.display = "flex";
+            document.getElementById('congrats-message').style.display = "block";
+
+            setTimeout(() => {
+                startBalloons();
+                startHearts();
+            }, 1000);
+
+
+        }
+
+        // Função para criar balões
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(balloon);
+            setTimeout(() => balloon.remove(), 5000);
+        }
+
+        function startBalloons() {
+            setInterval(createBalloon, 500);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        function startHearts() {
+            setInterval(createHeart, 400);
+        }
+
+
+    </script>
+</body>
+</html>
